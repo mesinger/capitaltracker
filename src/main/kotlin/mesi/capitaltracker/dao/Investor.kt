@@ -13,9 +13,9 @@ data class Investor(
         @Column(length = 50, nullable = false)
         val name : String,
 
-        @OneToMany(targetEntity = Transaction::class)
-        val incomingTransactions : MutableSet<Transaction> = mutableSetOf(),
+        @OneToMany(targetEntity = GoldTransaction::class)
+        val incomingGoldTransactions : MutableSet<GoldTransaction> = mutableSetOf(),
 
-        @OneToMany(targetEntity = Transaction::class)
-        val outgoingTransactions : MutableSet<Transaction> = mutableSetOf()
+        @OneToMany(targetEntity = GoldTransaction::class)
+        val outgoingGoldTransactions : MutableSet<GoldTransaction> = mutableSetOf()
 )

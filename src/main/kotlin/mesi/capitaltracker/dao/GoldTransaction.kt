@@ -4,8 +4,8 @@ import java.time.LocalDate
 import javax.persistence.*
 
 @Entity
-@Table(name = "transactions")
-data class Transaction(
+@Table(name = "goldtransactions")
+data class GoldTransaction(
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +17,9 @@ data class Transaction(
         @Column(nullable = false)
         val value : Double,
 
-        @Enumerated(EnumType.STRING)
         @Column(nullable = false)
-        val currency : Currency,
+        val fees : Double,
 
         @ManyToOne
-        var investment: Investment? = null
+        var goldInvestment: GoldInvestment? = null
 )
