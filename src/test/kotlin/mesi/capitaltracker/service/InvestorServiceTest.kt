@@ -2,8 +2,10 @@ package mesi.capitaltracker.service
 
 import junit.framework.Assert.*
 import mesi.capitaltracker.dao.Investor
-import mesi.capitaltracker.dao.InvestorRepository
+import mesi.capitaltracker.dao.InvestorRepo
+import mesi.capitaltracker.util.InvestorNotFoundException
 import org.junit.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.Mockito.times
@@ -23,7 +25,7 @@ class InvestorServiceTest {
     @TestConfiguration
     internal class ContextProvider {
         @Bean
-        fun investorService(): InvestorService {
+        fun service(): InvestorService {
             return InvestorService()
         }
     }
@@ -32,7 +34,7 @@ class InvestorServiceTest {
     private lateinit var service : InvestorService
 
     @MockBean
-    private lateinit var repo : InvestorRepository
+    private lateinit var repo : InvestorRepo
 
     @Test
     fun testGetExistingInvestor() {
@@ -42,14 +44,13 @@ class InvestorServiceTest {
         val fetchedInvestor = service.get(investor.id)
 
         assertNotNull(fetchedInvestor)
-        assertEquals(fetchedInvestor!!.name, investor.name)
+        assertEquals(fetchedInvestor, investor)
     }
 
     @Test
     fun testGetNullForNonExistingInvestor() {
         Mockito.`when`(repo.findById(1)).thenReturn(Optional.empty())
-        val fetchedInvestor = service.get(1)
-        assertNull(fetchedInvestor)
+        assertThrows<InvestorNotFoundException> { service.get(1) }
     }
 
     @Test

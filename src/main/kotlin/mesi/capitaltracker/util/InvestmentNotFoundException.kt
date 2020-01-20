@@ -1,4 +1,4 @@
-package mesi.capitaltracker.utility
+package mesi.capitaltracker.util
 
 import java.lang.RuntimeException
 

@@ -1,4 +1,4 @@
-package mesi.capitaltracker.utility
+package mesi.capitaltracker.util
 
 import com.fasterxml.jackson.core.JsonParseException
 import org.springframework.http.ResponseEntity

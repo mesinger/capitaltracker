@@ -1,4 +1,4 @@
-package mesi.capitaltracker.utility
+package mesi.capitaltracker.util
 
 import com.fasterxml.jackson.core.JsonParseException
 import org.springframework.http.ResponseEntity
@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 
 @ControllerAdvice
-class InvestorNotFoundExceptionController {
+class InvestmentNotFoundExceptionController {
 
-    @ExceptionHandler(InvestorNotFoundException::class)
+    @ExceptionHandler(InvestmentNotFoundException::class)
     fun onException() : ResponseEntity<String> {
-        return ResponseEntity.badRequest().body("Unknown investor")
+        return ResponseEntity.badRequest().body("Unknown investment")
     }
 }

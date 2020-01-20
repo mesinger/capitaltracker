@@ -1,5 +1,6 @@
 package mesi.capitaltracker.dao
 
+import org.springframework.data.jpa.repository.JpaRepository
 import java.time.LocalDate
 import javax.persistence.*
 
@@ -11,6 +12,9 @@ data class GoldTransaction(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id : Long,
 
+        @ManyToOne
+        var investor : Investor?,
+
         @Column(nullable = false)
         val timestamp : LocalDate,
 
@@ -18,8 +22,7 @@ data class GoldTransaction(
         val value : Double,
 
         @Column(nullable = false)
-        val fees : Double,
-
-        @ManyToOne
-        var goldInvestment: GoldInvestment? = null
+        val fees : Double
 )
+
+interface GoldTransactionRepo : JpaRepository<GoldTransaction, Long>

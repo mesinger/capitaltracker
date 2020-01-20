@@ -1,5 +1,6 @@
 package mesi.capitaltracker.dao
 
+import org.springframework.data.jpa.repository.JpaRepository
 import javax.persistence.*
 
 @Entity
@@ -11,11 +12,7 @@ data class Investor(
         val id : Long,
 
         @Column(length = 50, nullable = false)
-        val name : String,
-
-        @OneToMany(targetEntity = GoldTransaction::class)
-        val incomingGoldTransactions : MutableSet<GoldTransaction> = mutableSetOf(),
-
-        @OneToMany(targetEntity = GoldTransaction::class)
-        val outgoingGoldTransactions : MutableSet<GoldTransaction> = mutableSetOf()
+        val name : String
 )
+
+interface InvestorRepo : JpaRepository<Investor, Long>
