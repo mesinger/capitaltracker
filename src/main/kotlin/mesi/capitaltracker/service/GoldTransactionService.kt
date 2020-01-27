@@ -1,6 +1,5 @@
 package mesi.capitaltracker.service
 
-import mesi.capitaltracker.dao.FinanceDao
 import mesi.capitaltracker.dao.GoldTransaction
 import mesi.capitaltracker.dao.GoldTransactionRepo
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,7 +15,7 @@ class GoldTransactionService {
     private lateinit var repo : GoldTransactionRepo
 
     @Autowired
-    private lateinit var financeDao: FinanceDao
+    private lateinit var financeApi : FinanceApiService
 
     fun addTransactionForUser(userId : Long, transaction : GoldTransaction) : GoldTransaction {
         val investor = investorService.get(userId)
@@ -31,17 +30,17 @@ class GoldTransactionService {
     fun getInvestmentOverviewForUser(userId: Long) : InvestmentOverview {
         val transactions = getTransactionsForUser(userId)
 
-        val investedTotal = transactions.map { it.value }.sum()
-        val feesTotal = transactions.map { it.fees }.sum()
+        val investedInUsd = transactions.map { financeApi.forex.transformTo(it.currency, "USD", it.value) }.sum()
+        val feesInUsd = transactions.map { financeApi.forex.transformTo(it.currency, "USD", it.fees) }.sum()
 
         val ounces = transactions.map { it.ounce }.sum()
-        val currentOuncePriceInUsd = financeDao.getGoldPriceInUsd()
-        val usdEur = financeDao.getExchangeRate("USD", "EUR")
-        val currentValue = ounces * currentOuncePriceInUsd * usdEur
+        val currentOuncePriceInUsd = financeApi.gold.goldPrice()
+
+        val usdEur = financeApi.forex.exchangeRate("USD", "EUR")
 
         return InvestmentOverview(
-                invested = investedTotal + feesTotal,
-                current = currentValue
+                invested = investedInUsd * usdEur + feesInUsd * usdEur,
+                current = ounces * currentOuncePriceInUsd * usdEur
         )
     }
 }

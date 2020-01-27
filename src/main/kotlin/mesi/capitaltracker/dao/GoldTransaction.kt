@@ -19,13 +19,16 @@ data class GoldTransaction(
         val timestamp : LocalDate,
 
         @Column(nullable = false)
+        val ounce : Double,
+
+        @Column(nullable = false)
         val value : Double,
 
         @Column(nullable = false)
         val fees : Double,
 
         @Column(nullable = false)
-        val ounce : Double
+        val currency : String
 )
 
 interface GoldTransactionRepo : JpaRepository<GoldTransaction, Long>
