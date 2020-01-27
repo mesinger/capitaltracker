@@ -1,6 +1,7 @@
 package mesi.capitaltracker.controller
 
 import mesi.capitaltracker.dao.GoldTransaction
+import mesi.capitaltracker.service.InvestmentOverview
 import mesi.capitaltracker.service.TransactionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*

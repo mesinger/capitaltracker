@@ -1,9 +1,7 @@
 package mesi.capitaltracker.service
 
 import junit.framework.Assert.assertEquals
-import mesi.capitaltracker.dao.GoldTransaction
-import mesi.capitaltracker.dao.GoldTransactionRepo
-import mesi.capitaltracker.dao.Investor
+import mesi.capitaltracker.dao.*
 import mesi.capitaltracker.util.InvestorNotFoundException
 import org.junit.Test
 import org.junit.jupiter.api.assertThrows
@@ -52,13 +50,45 @@ class GoldTransactionServiceTest {
         assertThrows<InvestorNotFoundException> { transactionService.addTransactionForUser(1, provideTransaction()) }
     }
 
+    @Test
+    fun testGetTransactionsForUser() {
+        val transactions = listOf(provideTransaction(), provideTransaction())
+        Mockito.`when`(repo.findAll()).thenReturn(transactions)
+
+        val actual = transactionService.getTransactionsForUser(1)
+        assertEquals(transactions, actual)
+    }
+
+    @Test
+    fun testGetInvestmentOverviewForUser() {
+        val transactions = listOf(provideTransaction(), provideTransaction())
+        Mockito.`when`(transactionService.getTransactionsForUser(1)).thenReturn(transactions)
+
+        // invested + fees
+        val invested = (1.0 + 1.0) + (0.1 + 0.1)
+        // ounces * current price * exchagne rate - fees
+        val current = (1.0 + 1.0) * 1.5 * 1.25
+        val overview = transactionService.getInvestmentOverviewForUser(1)
+
+        assertEquals(invested, overview.invested)
+        assertEquals(current, overview.current)
+    }
+
     @TestConfiguration
     internal class ContextProvider {
         @Bean
         fun service(): GoldTransactionService {
             return GoldTransactionService()
         }
+
+        @Bean
+        fun financeDao(): FinanceDao {
+            return object : FinanceDao {
+                override fun getResourcePrice(name: String): Double = 1.5
+                override fun getExchangeRate(from: String, to: String): Double = 1.25
+            }
+        }
     }
 
-    private fun provideTransaction() = GoldTransaction(1, null, LocalDate.MIN, 1.0, 0.1)
+    private fun provideTransaction() = GoldTransaction(1, investor, LocalDate.MIN, 1.0, 0.1, 1.0)
 }

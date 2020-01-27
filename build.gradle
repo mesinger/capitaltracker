@@ -13,6 +13,10 @@ sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
+
+	maven {
+		url  "https://dl.bintray.com/patriques82/maven"
+	}
 }
 
 dependencies {
@@ -26,6 +30,8 @@ dependencies {
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testCompile group: 'com.h2database', name: 'h2', version: '1.4.200'
+
+	implementation 'org.patriques:alphavantage4j:1.4'
 }
 
 allOpen {

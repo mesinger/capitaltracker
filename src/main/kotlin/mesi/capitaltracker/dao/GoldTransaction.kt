@@ -22,7 +22,10 @@ data class GoldTransaction(
         val value : Double,
 
         @Column(nullable = false)
-        val fees : Double
+        val fees : Double,
+
+        @Column(nullable = false)
+        val ounce : Double
 )
 
 interface GoldTransactionRepo : JpaRepository<GoldTransaction, Long>
