@@ -84,7 +84,7 @@ class GoldTransactionServiceTest {
         @Bean
         fun financeDao(): FinanceDao {
             return object : FinanceDao {
-                override fun getResourcePrice(name: String): Double = 1.5
+                override fun getGoldPriceInUsd(): Double = 1.5
                 override fun getExchangeRate(from: String, to: String): Double = 1.25
             }
         }

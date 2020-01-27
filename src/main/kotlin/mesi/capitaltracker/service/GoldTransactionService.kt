@@ -35,8 +35,8 @@ class GoldTransactionService {
         val feesTotal = transactions.map { it.fees }.sum()
 
         val ounces = transactions.map { it.ounce }.sum()
-        val currentOuncePriceInUsd = financeDao.getResourcePrice("gold")
-        val usdEur = financeDao.getExchangeRate("usd", "eur")
+        val currentOuncePriceInUsd = financeDao.getGoldPriceInUsd()
+        val usdEur = financeDao.getExchangeRate("USD", "EUR")
         val currentValue = ounces * currentOuncePriceInUsd * usdEur
 
         return InvestmentOverview(
