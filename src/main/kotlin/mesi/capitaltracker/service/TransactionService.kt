@@ -8,4 +8,7 @@ class TransactionService {
 
     @Autowired
     lateinit var gold : GoldTransactionService
+
+    @Autowired
+    lateinit var stock : StockTransactionService
 }

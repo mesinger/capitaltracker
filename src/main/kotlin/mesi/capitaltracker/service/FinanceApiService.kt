@@ -11,4 +11,7 @@ class FinanceApiService {
 
     @Autowired
     lateinit var gold : GoldPriceService
+
+    @Autowired
+    lateinit var stock : StockPriceService
 }

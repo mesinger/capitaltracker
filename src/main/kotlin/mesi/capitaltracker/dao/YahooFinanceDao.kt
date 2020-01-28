@@ -31,5 +31,17 @@ class YahooFinanceDao : FinanceDao {
         }
     }
 
+    override fun getStockPrice(symbol: String): Double {
+        return cache.get(symbol) ?: kotlin.run {
+            val stockPrice = YahooFinance.get(symbol).quote.price.toDouble()
+            cache.put(symbol, stockPrice)
+            return stockPrice
+        }
+    }
+
+    override fun getStockCurrency(symbol: String): String {
+        return YahooFinance.get(symbol).currency
+    }
+
     private fun getFxSymbol(from: String, to: String) = "${from.toUpperCase()}${to.toUpperCase()}=X"
 }

@@ -21,4 +21,14 @@ class InvestmentController {
     fun getGoldInvestmentOverviewByUser(@PathVariable("userId") userId: Long, @RequestParam("currency") targetCurrency : String) : InvestmentOverview {
         return transactionService.gold.getInvestmentOverviewForUser(userId, targetCurrency)
     }
+
+    @RequestMapping(
+            path = ["stock/{userId}"],
+            method = [RequestMethod.GET],
+            produces = ["application/json"]
+    )
+    @ResponseBody
+    fun getShareInvestmentOverviewByUser(@PathVariable("userId") userId: Long, @RequestParam("stock_symbol") symbol : String, @RequestParam("currency") targetCurrency : String) : InvestmentOverview {
+        return transactionService.stock.getShareInvestmentOverviewForUser(userId, symbol, targetCurrency)
+    }
 }

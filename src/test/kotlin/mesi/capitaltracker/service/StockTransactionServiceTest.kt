@@ -19,13 +19,13 @@ import java.time.LocalDate
 
 @RunWith(SpringRunner::class)
 @DataJpaTest
-class GoldTransactionServiceTest {
+class StockTransactionServiceTest {
 
     @Autowired
-    private lateinit var transactionService : GoldTransactionService
+    private lateinit var transactionService : StockTransactionService
 
     @MockBean
-    private lateinit var repo : GoldTransactionRepo
+    private lateinit var repo : StockTransactionRepo
 
     @MockBean
     private lateinit var investorService : InvestorService
@@ -60,15 +60,15 @@ class GoldTransactionServiceTest {
     }
 
     @Test
-    fun testGetInvestmentOverviewForUser() {
+    fun testGetShareInvestmentOverviewForUser() {
         val transactions = listOf(provideTransaction(), provideTransaction())
         Mockito.`when`(transactionService.getTransactionsForUser(1)).thenReturn(transactions)
 
-        // invested + fees
-        val invested = (1.0 + 1.0) + (0.1 + 0.1)
-        // ounces * current price * exchagne rate - fees
-        val current = (1.0 + 1.0) * 1.5 * 1.25
-        val overview = transactionService.getInvestmentOverviewForUser(1, "EUR")
+        // stock price + fee
+        val invested = (300.0 * 4) + (5.0 * 2)
+        // num of stocks * stockprice
+        val current = 100.0 * 4
+        val overview = transactionService.getShareInvestmentOverviewForUser(1, "AAPL", "EUR")
 
         assertEquals(invested, overview.invested)
         assertEquals(current, overview.current)
@@ -77,8 +77,8 @@ class GoldTransactionServiceTest {
     @TestConfiguration
     internal class ContextProvider {
         @Bean
-        fun service(): GoldTransactionService {
-            return GoldTransactionService()
+        fun service(): StockTransactionService {
+            return StockTransactionService()
         }
 
         @Bean
@@ -92,5 +92,5 @@ class GoldTransactionServiceTest {
         }
     }
 
-    private fun provideTransaction() = GoldTransaction(1, investor, LocalDate.MIN, 1.0, 0.1, 1.0, "EUR")
+    private fun provideTransaction() = StockTransaction(1, "AAPL", investor, LocalDate.MIN, 300.0, 2, 5.0, "EUR")
 }
