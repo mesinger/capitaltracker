@@ -21,6 +21,8 @@ class YahooFinanceDao : FinanceDao {
     }
 
     override fun getExchangeRate(from: String, to: String): Double {
+        if(from == to) return 1.0
+
         val yahooFx = getFxSymbol(from, to)
         return cache.get(yahooFx) ?: kotlin.run {
             val exchangeRate = YahooFinance.getFx(getFxSymbol(from, to)).price.toDouble()

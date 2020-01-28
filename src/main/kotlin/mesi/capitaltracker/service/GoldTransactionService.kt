@@ -27,20 +27,19 @@ class GoldTransactionService {
         return repo.findAll().filter { it.investor?.id == userId }
     }
 
-    fun getInvestmentOverviewForUser(userId: Long) : InvestmentOverview {
+    fun getInvestmentOverviewForUser(userId: Long, targetCurrency : String) : InvestmentOverview {
         val transactions = getTransactionsForUser(userId)
 
-        val investedInUsd = transactions.map { financeApi.forex.transformTo(it.currency, "USD", it.value) }.sum()
-        val feesInUsd = transactions.map { financeApi.forex.transformTo(it.currency, "USD", it.fees) }.sum()
+        val investedTotal = transactions.map { financeApi.forex.transformTo(it.currency, targetCurrency, it.value + it.fees) }.sum()
 
         val ounces = transactions.map { it.ounce }.sum()
         val currentOuncePriceInUsd = financeApi.gold.goldPrice()
 
-        val usdEur = financeApi.forex.exchangeRate("USD", "EUR")
+        val usdTarget = financeApi.forex.exchangeRate("USD", targetCurrency)
 
         return InvestmentOverview(
-                invested = investedInUsd * usdEur + feesInUsd * usdEur,
-                current = ounces * currentOuncePriceInUsd * usdEur
+                invested = investedTotal,
+                current = ounces * currentOuncePriceInUsd * usdTarget
         )
     }
 }

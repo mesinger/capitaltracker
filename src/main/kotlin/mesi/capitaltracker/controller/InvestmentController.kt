@@ -18,7 +18,7 @@ class InvestmentController {
             produces = ["application/json"]
     )
     @ResponseBody
-    fun getGoldInvestmentOverviewByUser(@PathVariable("userId") userId: Long) : InvestmentOverview {
-        return transactionService.gold.getInvestmentOverviewForUser(userId)
+    fun getGoldInvestmentOverviewByUser(@PathVariable("userId") userId: Long, @RequestParam("currency") targetCurrency : String) : InvestmentOverview {
+        return transactionService.gold.getInvestmentOverviewForUser(userId, targetCurrency)
     }
 }

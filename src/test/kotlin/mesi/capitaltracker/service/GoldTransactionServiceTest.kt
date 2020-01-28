@@ -68,7 +68,7 @@ class GoldTransactionServiceTest {
         val invested = (1.0 + 1.0) + (0.1 + 0.1)
         // ounces * current price * exchagne rate - fees
         val current = (1.0 + 1.0) * 1.5 * 1.25
-        val overview = transactionService.getInvestmentOverviewForUser(1)
+        val overview = transactionService.getInvestmentOverviewForUser(1, "EUR")
 
         assertEquals(invested, overview.invested)
         assertEquals(current, overview.current)
@@ -90,5 +90,5 @@ class GoldTransactionServiceTest {
         }
     }
 
-    private fun provideTransaction() = GoldTransaction(1, investor, LocalDate.MIN, 1.0, 0.1, 1.0)
+    private fun provideTransaction() = GoldTransaction(1, investor, LocalDate.MIN, 1.0, 0.1, 1.0, "EUR")
 }
