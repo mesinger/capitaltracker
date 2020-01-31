@@ -43,8 +43,13 @@ class StockTransactionService {
         val stockToTargetExchangeRate = financeApi.forex.exchangeRate(stockCurrency, targetCurrency)
 
         return InvestmentOverview(
+                name = symbol,
                 invested = investedTotal,
                 current = numOfShares * (currentStockPrice * stockToTargetExchangeRate)
         )
+    }
+
+    fun getAllInvestedSymbolsForUser(userId : Long) : Set<String> {
+        return getTransactionsForUser(userId).map { it.symbol }.toSet()
     }
 }

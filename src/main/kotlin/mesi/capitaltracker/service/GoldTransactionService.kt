@@ -38,6 +38,7 @@ class GoldTransactionService {
         val usdTarget = financeApi.forex.exchangeRate("USD", targetCurrency)
 
         return InvestmentOverview(
+                name = "Gold",
                 invested = investedTotal,
                 current = ounces * currentOuncePriceInUsd * usdTarget
         )

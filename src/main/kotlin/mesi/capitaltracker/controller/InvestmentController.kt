@@ -31,4 +31,16 @@ class InvestmentController {
     fun getShareInvestmentOverviewByUser(@PathVariable("userId") userId: Long, @RequestParam("stock_symbol") symbol : String, @RequestParam("currency") targetCurrency : String) : InvestmentOverview {
         return transactionService.stock.getShareInvestmentOverviewForUser(userId, symbol, targetCurrency)
     }
+
+    @RequestMapping(
+            path = ["/{userId}"],
+            method = [RequestMethod.GET],
+            produces = ["application/json"]
+    )
+    fun getOverallInvestmentOverviewByUser(@PathVariable("userId") userId: Long,  @RequestParam("currency") targetCurrency : String) : List<InvestmentOverview> {
+        val investments = mutableListOf<InvestmentOverview>()
+        investments.add(transactionService.gold.getInvestmentOverviewForUser(userId, targetCurrency))
+        investments.addAll(transactionService.stock.getAllInvestedSymbolsForUser(userId).map { symbol -> transactionService.stock.getShareInvestmentOverviewForUser(userId, symbol, targetCurrency) })
+        return investments
+    }
 }
