@@ -13,7 +13,7 @@ data class GoldTransaction(
         val id : Long,
 
         @ManyToOne
-        var investor : Investor?,
+        val investor : User,
 
         @Column(nullable = false)
         val timestamp : LocalDate,
@@ -22,13 +22,16 @@ data class GoldTransaction(
         val ounce : Double,
 
         @Column(nullable = false)
-        val value : Double,
+        @Convert(converter = CurrencyAmountConverter::class)
+        val amount : CurrencyAmount,
 
         @Column(nullable = false)
-        val fees : Double,
+        @Convert(converter = CurrencyAmountConverter::class)
+        val fees : CurrencyAmount,
 
         @Column(nullable = false)
-        val currency : String
+        @Enumerated(value = EnumType.STRING)
+        val direction : TransactionDirection
 )
 
 interface GoldTransactionRepo : JpaRepository<GoldTransaction, Long>

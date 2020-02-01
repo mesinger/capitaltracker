@@ -1,6 +1,5 @@
 package mesi.capitaltracker.util
 
-import com.fasterxml.jackson.core.JsonParseException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
